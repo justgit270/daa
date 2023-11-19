@@ -1,0 +1,115 @@
+
+#include <iostream>
+#include <algorithm>
+using namespace std;
+struct Node
+{
+    float weight;
+    float profit;
+};
+bool Compare(Node first, Node second)
+{
+    float profit1 = first.profit / first.weight;
+    float profit2 = second.profit / second.weight;
+    if (profit1 > profit2)
+    {
+        return true;
+    }
+    return false;
+}
+// using greedy approach(Fractional Knapsac)
+float knapsack_greedy_approach(int weight[], int profit[], int n, int wt)
+{
+    float profits = 0;
+    float sum;
+    Node Data[4];
+    // assigning data into data variable which we had defined up
+    for (int i = 0; i < n; i++)
+    {
+        Data[i].profit = profit[i];
+        Data[i].weight = weight[i];
+    }
+
+    // step1 sort on the basis of the fraction profit
+
+    sort(Data, Data + n, Compare);
+    for (int i = 0; i < n; i++)
+    {
+        if (Data[i].weight <= wt)
+        {
+            wt = wt - Data[i].weight;
+            profits = profits + Data[i].profit;
+        }
+        else
+        {
+            profits = profits + (Data[i].profit / Data[i].weight) * wt;
+            break;
+        }
+    }
+    return profits;
+}
+
+// using dynamic programming
+int knapsack_01_approach(int weight[], int profit[], int n, int wt)
+{
+    int matrix[n][wt + 1];
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j <= wt; j++)
+        {
+            if (i == 0 || j == 0)
+            {
+                matrix[i][j] = 0;
+            }
+            else
+            {
+                if (weight[i] <= j)
+                {
+                    matrix[i][j] = max(matrix[i - 1][j], profit[i] + matrix[i - 1][j - weight[i]]);
+                }
+                else
+                {
+                    matrix[i][j] = matrix[i - 1][j];
+                }
+            }
+        }
+    }
+    // printing all matrix;
+    // for (int i = 0; i < n; i++)
+    // {
+    //     for (int j = 0; j <= wt; j++)
+    //     {
+    //         cout << matrix[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+    return matrix[n - 1][wt];
+}
+
+int main()
+{
+    int weight[4] = {0, 18, 15, 10};
+    int profit[4] = {0, 25, 24, 15};
+    int n = 4;
+    int wt = 20;
+    float answer1 = knapsack_01_approach(weight, profit, n, wt);
+    cout << "DP_answer =" << answer1 << endl;
+    float answer2 = knapsack_greedy_approach(weight, profit, n, wt);
+    cout << "GREEDY_answer =" << answer2 << endl;
+    if (answer1 > answer2)
+    {
+        cout << "knapsack problem using dynamic programming will be best in this case";
+    }
+    else
+    {
+        if (answer2 > answer1)
+        {
+            cout << "knapsack problem using greedy approach will be best in this case ";
+        }
+        else
+        {
+            cout << "both will be the optimal in this case ";
+        }
+    }
+    return 0;
+}
