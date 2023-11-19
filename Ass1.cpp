@@ -1,5 +1,7 @@
-#include <iostream> 
-#include <vector> 
+#include <iostream>
+#include <algorithm>
+#include <cstring>
+#include <vector>
 using namespace std; 
 double fractionalKnapsack(int W, int n, vector<int> &weights, vector<int> &values); 
 int boundedKnapsack(int W, int n, vector<int> &weights, vector<int> &values); 
