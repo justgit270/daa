@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+
+#define INT_MAX 999
+
 using namespace std;
 
 struct Edge {
