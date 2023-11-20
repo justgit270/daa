@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-
+// Not work with negative edge 
 #define INT_MAX 999
 
 using namespace std;
